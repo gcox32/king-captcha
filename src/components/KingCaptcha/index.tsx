@@ -19,6 +19,8 @@ export const KingCaptcha = ({
   const [selectedPiece, setSelectedPiece] = useState<{x: number, y: number} | null>(null);
   const [isOpen, setIsOpen] = useState(true);
 
+  const boardSizeEven = boardSize % 2 === 0;
+
   const handleClose = () => {
     setIsOpen(false);
     onClose?.();
@@ -89,7 +91,7 @@ export const KingCaptcha = ({
           row.map((piece, x) => (
             <div
               key={`${x}-${y}`}
-              className={styles.square}
+              className={`${styles.square} ${boardSizeEven ? styles.even : ''}`}
               onDragOver={handleDragOver}
               onDrop={handleDrop(x, y)}
             >

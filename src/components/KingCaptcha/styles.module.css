@@ -1,7 +1,12 @@
+:root {
+  --dark-square: #769656;
+  --light-square: #eeeed2;
+}
+
 .board {
   display: grid;
   gap: 2px;
-  background: #769656;
+  background: var(--dark-square);
   padding: 8px;
   border-radius: 4px;
   margin-top: 1rem;
@@ -9,15 +14,26 @@
 
 .square {
   aspect-ratio: 1;
-  background: #eeeed2;
+  background: var(--light-square);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
-.square:nth-child(odd) {
-  background: #769656;
+.square:nth-child(odd):not(.even) {
+  background: var(--dark-square);
+}
+
+.square.even:nth-child(1),
+.square.even:nth-child(3),
+.square.even:nth-child(6),
+.square.even:nth-child(8),
+.square.even:nth-child(9),
+.square.even:nth-child(11),
+.square.even:nth-child(14),
+.square.even:nth-child(16) {
+  background: var(--dark-square);
 }
 
 /* Add visual feedback for valid drop targets */
@@ -32,5 +48,5 @@
 }
 
 .selected {
-  background: #baca44 !important;
+  background: var(--dark-square) !important;
 }
