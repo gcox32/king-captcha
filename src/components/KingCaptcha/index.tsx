@@ -99,7 +99,6 @@ export const KingCaptcha = ({
       onClose={handleClose}
       title={label}
     >
-      <p>{description}</p>
       <div className={styles.boardContainer}>
         <div
           className={styles.board}
@@ -129,13 +128,14 @@ export const KingCaptcha = ({
             ))
           )}
         </div>
+        <p>{description}</p>
         
         {status === 'success' && (
           <div className={styles.overlay}>
             <div className={styles.successContent}>
               <div className={styles.checkmark}>✓</div>
               <p>Correct!</p>
-              <button onClick={handleClose}>Continue</button>
+              <button className={styles.nextButton} onClick={handleClose}>Continue</button>
             </div>
           </div>
         )}
@@ -145,7 +145,7 @@ export const KingCaptcha = ({
             <div className={styles.failureContent}>
               <div className={styles.x}>✕</div>
               <p>Incorrect. Try again!</p>
-              <button onClick={handleReset}>Try Again</button>
+              <button className={styles.nextButton} onClick={handleReset}>Try Again</button>
             </div>
           </div>
         )}
