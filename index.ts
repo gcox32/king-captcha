@@ -1,1 +1,1 @@
-export * from './src/KingCaptcha';
+export * from './src/components/KingCaptcha';

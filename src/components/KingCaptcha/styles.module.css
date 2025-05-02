@@ -1,0 +1,36 @@
+.board {
+  display: grid;
+  gap: 2px;
+  background: #769656;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.square {
+  aspect-ratio: 1;
+  background: #eeeed2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.square:nth-child(odd) {
+  background: #769656;
+}
+
+/* Add visual feedback for valid drop targets */
+.square.dropTarget {
+  background-color: rgba(255, 255, 0, 0.2);
+}
+
+/* Ensure squares can receive drops */
+.square {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.selected {
+  background: #baca44 !important;
+}

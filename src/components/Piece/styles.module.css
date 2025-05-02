@@ -1,0 +1,34 @@
+.piece {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.pieceImage {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.piece.white {
+  cursor: grab;
+}
+
+.piece.white:active {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+.piece.black {
+  cursor: default;
+}
+
+.selected {
+  background-color: rgba(255, 255, 0, 0.3);
+  border-radius: 50%;
+} 
