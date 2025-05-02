@@ -14,10 +14,11 @@ export const KingCaptcha = ({
   onFailure,
   onClose
 }: KingCaptchaProps) => {
-  const [boardConfig] = useState(() => generateBoardConfig(boardSize));
+  const [boardConfig, setBoardConfig] = useState(() => generateBoardConfig(boardSize));
   const [board, setBoard] = useState<BoardPiece[][]>(boardConfig.initial);
   const [selectedPiece, setSelectedPiece] = useState<{x: number, y: number} | null>(null);
   const [isOpen, setIsOpen] = useState(true);
+  const [status, setStatus] = useState<'playing' | 'success' | 'failure'>('playing');
 
   const boardSizeEven = boardSize % 2 === 0;
 
@@ -55,12 +56,11 @@ export const KingCaptcha = ({
         setBoard(newBoard);
         if (isWinningMove(newBoard, boardConfig.winningConfigs)) {
           setTimeout(() => {
-            onSuccess?.();
+            handleSuccess();
           }, 300);
         } else {
           setTimeout(() => {
-            setBoard(boardConfig.initial);
-            onFailure?.();
+            handleFailure();
           }, 300);
         }
       }
@@ -74,6 +74,25 @@ export const KingCaptcha = ({
     setSelectedPiece(null);
   };
 
+  const handleReset = () => {
+    const newConfig = generateBoardConfig(boardSize);
+    setBoardConfig(newConfig);
+    setBoard(newConfig.initial);
+    setStatus('playing');
+  };
+
+  const handleSuccess = () => {
+    setStatus('success');
+    setTimeout(() => {
+      onSuccess?.();
+    }, 300);
+  };
+
+  const handleFailure = () => {
+    setStatus('failure');
+    onFailure?.();
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -81,32 +100,54 @@ export const KingCaptcha = ({
       title={label}
     >
       <p>{description}</p>
-      <div
-        className={styles.board}
-        style={{
-          gridTemplateColumns: `repeat(${boardSize}, 1fr)`
-        }}
-      >
-        {board.map((row, y) =>
-          row.map((piece, x) => (
-            <div
-              key={`${x}-${y}`}
-              className={`${styles.square} ${boardSizeEven ? styles.even : ''}`}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop(x, y)}
-            >
-              {piece && (
-                <Piece
-                  type={piece.type}
-                  color={piece.color}
-                  position={{ x, y }}
-                  isSelected={selectedPiece?.x === x && selectedPiece?.y === y}
-                  onDragStart={handleDragStart(x, y)}
-                  onDragEnd={handleDragEnd}
-                />
-              )}
+      <div className={styles.boardContainer}>
+        <div
+          className={styles.board}
+          style={{
+            gridTemplateColumns: `repeat(${boardSize}, 1fr)`
+          }}
+        >
+          {board.map((row, y) =>
+            row.map((piece, x) => (
+              <div
+                key={`${x}-${y}`}
+                className={`${styles.square} ${boardSizeEven ? styles.even : ''}`}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop(x, y)}
+              >
+                {piece && (
+                  <Piece
+                    type={piece.type}
+                    color={piece.color}
+                    position={{ x, y }}
+                    isSelected={selectedPiece?.x === x && selectedPiece?.y === y}
+                    onDragStart={handleDragStart(x, y)}
+                    onDragEnd={handleDragEnd}
+                  />
+                )}
+              </div>
+            ))
+          )}
+        </div>
+        
+        {status === 'success' && (
+          <div className={styles.overlay}>
+            <div className={styles.successContent}>
+              <div className={styles.checkmark}>✓</div>
+              <p>Correct!</p>
+              <button onClick={handleClose}>Continue</button>
             </div>
-          ))
+          </div>
+        )}
+        
+        {status === 'failure' && (
+          <div className={styles.overlay}>
+            <div className={styles.failureContent}>
+              <div className={styles.x}>✕</div>
+              <p>Incorrect. Try again!</p>
+              <button onClick={handleReset}>Try Again</button>
+            </div>
+          </div>
         )}
       </div>
     </Modal>

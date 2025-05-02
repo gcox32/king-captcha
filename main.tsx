@@ -32,8 +32,6 @@ const App = () => {
         <KingCaptcha 
           label="Prove it" 
           boardSize={3}
-          onSuccess={handleSuccess}
-          onFailure={handleFailure}
           onClose={() => setShowCaptcha(false)}
         />
       )}
